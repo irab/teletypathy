@@ -160,49 +160,6 @@ graph TB
 
 ---
 
-## Quick Start
-
-### Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd teletypathy
-
-# Install Python dependencies
-pip install -r requirements.txt
-```
-
-### Basic Usage
-
-```python
-from src.core.encoding import PatternEncoder
-
-# Create an encoder
-encoder = PatternEncoder()
-
-# Encode a character
-pattern = encoder.encode_character('E')
-print(f"Pattern duration: {pattern.get_duration()}ms")
-
-# Encode text
-patterns = encoder.encode_text("HELLO")
-for pattern in patterns:
-    print(f"Pattern: {pattern.get_duration()}ms")
-```
-
-### Run Examples
-
-```bash
-# Basic encoding example
-python examples/basic_encoding.py
-
-# Protocol example
-python examples/protocol_example.py
-```
-
----
-
 ## Project Status
 
 **Current Phase**: Phase 1 - Research & Approach Design
@@ -460,25 +417,11 @@ flowchart TD
 
 ## Development
 
-### Prerequisites
-
-- Python 3.8+
-- ESP-IDF or Arduino IDE (for firmware)
-- Git
-
-### Running Tests
-
-```bash
-python -m pytest tests/
-```
-
 ### Development Workflow
 
 1. Make changes to source code
-2. Run tests: `pytest tests/`
-3. Test examples: `python examples/basic_encoding.py`
-4. Update documentation
-5. Commit changes
+2. Update documentation
+3. Commit changes
 
 ### Key Design Decisions
 
@@ -497,7 +440,6 @@ See [docs/decisions.md](docs/decisions.md) for detailed decision records.
 
 Comprehensive documentation is available in the `docs/` directory:
 
-- **[Getting Started](docs/development/getting_started.md)**: Quick start guide
 - **[System Overview](docs/architecture/system_overview.md)**: High-level architecture
 - **[Encoding System](docs/design/encoding_system.md)**: Pattern encoding design
 - **[Protocol Specification](docs/design/protocol_spec.md)**: Communication protocol
@@ -518,12 +460,6 @@ Contributions are welcome! Please see the documentation for development guidelin
 - Hardware prototyping
 - Documentation improvements
 - Testing and validation
-
----
-
-## License
-
-MIT License (see LICENSE file)
 
 ---
 
@@ -571,11 +507,3 @@ This project draws from research in:
 See `docs/research/` for detailed research findings.
 
 ---
-
-## Acknowledgments
-
-Built with research insights from linguistics, HCI, and haptic feedback systems. Special thanks to the open-source hardware and software communities.
-
----
-
-**Status**: Active Development | **Version**: 0.1.0 | **Phase**: Research & Design

@@ -527,6 +527,39 @@ MIT License (see LICENSE file)
 
 ---
 
+## Related Sensory Augmentation Projects
+
+Teletypathy is part of a broader movement exploring sensory augmentation and substitution technologies. Here are some notable projects in this space:
+
+### Navigation & Spatial Awareness
+
+- **[feelSpace Belt](https://www.feelspace.de/)**: A vibrotactile belt worn around the waist that provides continuous feedback about orientation relative to Earth's magnetic field. Users develop an intuitive sense of direction over time, similar to migratory birds. ([Research Paper](https://pubmed.ncbi.nlm.nih.gov/37239192/))
+
+- **[Sensegait](https://www.negevlab.com/sensegait)**: A multisensory substitution belt designed for stroke rehabilitation, providing tactile stimulation on the lower back to compensate for missing sensory feedback during gait training.
+
+### Sensory Substitution & Augmentation
+
+- **[Tongueduino](https://www.media.mit.edu/projects/hackable-high-bandwidth-sensory-augmentation/overview/)**: An inexpensive tongue display developed at MIT Media Lab that interfaces with various sensors (e.g., magnetometers) to provide electro-tactile feedback, enabling new sensory experiences like an internal sense of direction.
+
+- **[Cthulhu Shield](https://www.open-electronics.org/cthulhu-shield-open-source-sensory-augmentation-platform-for-arduino/)**: An open-source Arduino-based platform using flexible electrodes on the tongue to transmit visual or auditory information through tactile stimulation, leveraging the tongue's high sensitivity.
+
+- **[Sensory Weaving](https://buildforge.one/projects/detail/sensory-weaving-augmentation-platform)**: A low-cost wearable neuroscience device that introduces new sensory inputs through haptics, thermal imaging, and depth sensing to expand human perception beyond traditional senses.
+
+- **[Sensory Helping Hands](https://duino4projects.com/sensory-helping-hands-modular-sensory-augmentation-system-prototype/)**: A modular wearable prototype allowing customizable sensor, actuator, and display placement on the body for personalized sensory augmentation.
+
+### How Teletypathy Differs
+
+While many sensory augmentation projects focus on **environmental sensing** (navigation, spatial awareness, sensor data), Teletypathy focuses specifically on **textual communication**:
+
+- **Communication-focused**: Translates text/keystrokes into tactile patterns rather than environmental data
+- **Language learning**: Designed for learning character patterns through muscle memory
+- **Real-time interaction**: Optimized for ultra-low latency (<10ms) for real-time typing feedback
+- **Frequency-optimized encoding**: Patterns designed based on character frequency in language
+
+Teletypathy shares the core principle of these projects: **expanding human perception through tactile feedback**, but applies it specifically to the domain of textual communication and language.
+
+---
+
 ## Related Research
 
 This project draws from research in:

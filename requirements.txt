@@ -1,0 +1,25 @@
+# Teletypathy Python Dependencies
+
+# Core library dependencies
+# (Currently minimal, will add as needed)
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Development tools
+black>=22.0.0
+flake8>=5.0.0
+mypy>=1.0.0
+
+# BLE (for future desktop application)
+# bleak>=0.20.0  # Cross-platform BLE
+# pyobjc>=9.0.0  # macOS Core Bluetooth (alternative)
+
+# Keyboard capture (platform-specific, to be added)
+# pynput>=1.7.0  # Cross-platform keyboard/mouse
+# pywin32>=300  # Windows-specific (Windows only)
+# Quartz>=0.0.1  # macOS-specific (macOS only)
+# python-xlib>=0.33  # Linux-specific (Linux only)
+
+

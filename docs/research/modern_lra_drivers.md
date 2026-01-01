@@ -405,3 +405,4 @@ Comparison of modern LRA haptic driver ICs available as alternatives to the DRV2
 - [Resonance Tracking Research](resonance_tracking.md): Resonance tracking explanation
 
 
+

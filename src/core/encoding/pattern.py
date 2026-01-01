@@ -286,3 +286,4 @@ class PatternEncoder:
         return patterns
 
 
+

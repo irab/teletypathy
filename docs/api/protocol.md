@@ -292,3 +292,4 @@ All messages follow this format:
 - [Encoding API](encoding.md): Pattern encoding API
 
 
+

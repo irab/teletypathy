@@ -308,3 +308,4 @@ Explanation of resonance tracking for LRA motors and its relevance to the Telety
 - [DRV2605 Technical Note](drv2605_technical_note.md): Driver details
 
 
+

@@ -211,3 +211,4 @@ Functional and non-functional requirements for the Teletypathy hardware platform
 - [Hardware Specifications](specs.md): Final specifications
 
 
+

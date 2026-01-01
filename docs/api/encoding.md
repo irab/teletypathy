@@ -206,3 +206,4 @@ for event in pattern.events:
 - [Encoding System Design](../design/encoding_system.md): Encoding strategy
 
 
+

@@ -68,36 +68,79 @@ sequenceDiagram
     Note over User,Motors: Total: ~10-30ms target
 ```
 
-### Character Encoding
+### Encoding System: Mixed Character/Phoneme Approach
 
-Each character maps to a unique vibration pattern using spatial (which motor) and temporal (when) encoding:
+Teletypathy uses an **8-bit encoding system with mode indicator** that enables seamless mixing of character and phoneme patterns:
 
-```mermaid
-graph LR
-    subgraph "High Frequency Letters"
-        E[E: Single pulse<br/>Actuator 0, 150ms]
-        T[T: Single pulse<br/>Actuator 1, 150ms]
-        A[A: Single pulse<br/>Actuator 2, 150ms]
-    end
-    
-    subgraph "Medium Frequency Letters"
-        N[N: Sequential<br/>0→1, 100ms each]
-        S[S: Sequential<br/>1→2, 100ms each]
-    end
-    
-    subgraph "Low Frequency Letters"
-        Z[Z: Complex pattern<br/>7→0, 8 pulses]
-        Q[Q: Reverse pattern<br/>0→7, 8 pulses]
-    end
-    
-    style E fill:#90EE90
-    style T fill:#90EE90
-    style A fill:#90EE90
-    style N fill:#FFD700
-    style S fill:#FFD700
-    style Z fill:#FFB6C1
-    style Q fill:#FFB6C1
+#### Architecture
+
 ```
+8-Actuator System:
+┌─────────────────────────────────────────┐
+│ Actuator 0-6: DATA (7 bits = 128 pat.) │
+│ Actuator 7:   MODE INDICATOR            │
+│   - OFF (0): Character encoding mode     │
+│   - ON  (1): Phoneme encoding mode      │
+└─────────────────────────────────────────┘
+
+Pattern Space:
+- Patterns 0-127:   Character/Word mode (Actuator 7 = OFF)
+- Patterns 128-255: Phoneme mode (Actuator 7 = ON)
+- Total: 256 patterns (perfect 8-bit fit)
+```
+
+#### Encoding Modes
+
+**1. Character Mode (Actuator 7 = OFF)**
+- Direct character-to-pattern mapping
+- Patterns 0-127 available
+- 80ms per character (uniform speed)
+- Best for: Technical text, proper nouns, exact spelling
+
+**2. Phoneme Mode (Actuator 7 = ON)**
+- Text → phonemes → patterns
+- Patterns 128-255 available
+- 80ms per phoneme (uniform speed)
+- Best for: General text, natural speech patterns
+- **8.9% faster** than character mode (fewer patterns)
+
+**3. Hybrid Mode (Automatic)**
+- Uses phonemes for common words
+- Falls back to characters for proper nouns/technical terms
+- Seamless mode switching per pattern
+- Best for: Mixed content
+
+#### Performance
+
+| Encoding Method | Speed | Improvement | Best For |
+|----------------|-------|-------------|----------|
+| **8-Bit Phoneme** | **13.7 cps** | **+8.9%** | **General text** |
+| Single-byte Character | 12.5 cps | Baseline | Technical text |
+| Hybrid (Phoneme+Char) | 12.8 cps | +2.6% | Mixed content |
+
+**Example**: 7,014-character article
+- Character encoding: 9.35 minutes
+- **Phoneme encoding: 8.36 minutes** (0.99 min saved, 10.6% faster)
+
+#### Pattern Examples
+
+**Character 'A' (Pattern 65):**
+```
+Binary: 01000001
+- Actuator 7: OFF (character mode)
+- Actuator 0: ON (character ID = 65)
+- Duration: 80ms
+```
+
+**Phoneme /h/ (Pattern 128):**
+```
+Binary: 10000000
+- Actuator 7: ON (phoneme mode)
+- Actuators 0-6: OFF (phoneme ID = 0)
+- Duration: 80ms
+```
+
+Both modes use **80ms patterns** for consistent speed and seamless switching.
 
 ### Hardware Architecture
 
@@ -152,8 +195,10 @@ graph TB
 
 - **Ultra-Low Latency**: Target <10ms from keystroke to vibration
 - **Real-Time Communication**: Instant tactile feedback as you type
-- **8-Actuator System**: Rich spatial patterns for character encoding
-- **Frequency-Optimized**: Common letters (E, T, A) use simpler patterns
+- **8-Actuator System**: Rich spatial patterns with mode indicator
+- **Mixed Encoding**: Seamless character/phoneme mode switching
+- **Optimized Speed**: 8.9% faster with phoneme encoding (13.7 cps)
+- **Frequency-Optimized**: Common patterns use simpler bit patterns
 - **Learnable**: Designed for muscle memory development over time
 - **Wireless**: Bluetooth Low Energy for untethered operation
 - **Battery-Powered**: 6-10 hours of active use
@@ -195,6 +240,82 @@ teletypathy/
 
 ---
 
+## Encoding Modes
+
+Teletypathy supports multiple encoding modes optimized for different use cases:
+
+### 1. Character Encoding (Single-Byte)
+
+**How it works:**
+- Each character → 8-bit pattern (80ms)
+- Direct ASCII mapping
+- Mode indicator: Actuator 7 = OFF
+
+**Best for:**
+- Technical text, code, URLs
+- Proper nouns and names
+- When exact spelling matters
+- Learning character patterns
+
+**Performance:** 12.5 characters/second
+
+### 2. Phoneme Encoding (8-Bit) ⭐ **Recommended**
+
+**How it works:**
+- Text → phonemes → 8-bit patterns (80ms each)
+- Mode indicator: Actuator 7 = ON
+- Fewer patterns than characters (6.7-10.6% compression)
+
+**Best for:**
+- General text and articles
+- Narrative content
+- Natural speech patterns
+- Maximum speed
+
+**Performance:** 13.7 characters/second (**8.9% faster**)
+
+**Example:**
+- "hello" = 5 characters → 4 phonemes (/h/ /ɛ/ /l/ /oʊ/)
+- Character encoding: 5 × 80ms = 400ms
+- Phoneme encoding: 4 × 80ms = 320ms
+- **20% faster for this word**
+
+### 3. Hybrid Mode (Automatic)
+
+**How it works:**
+- Common words → phonemes (faster)
+- Proper nouns/technical terms → characters (exact spelling)
+- Automatic mode switching per pattern
+
+**Best for:**
+- Mixed content (articles with names/technical terms)
+- Adaptive encoding
+- Best of both worlds
+
+**Performance:** 12.8 characters/second
+
+### Mode Indicator Architecture
+
+The mode indicator (Actuator 7) enables seamless mixing:
+
+```
+Pattern Format:
+[Mode Bit] [Data Bits 0-6]
+
+Character 'A' (65):  01000001 (Actuator 7 = OFF)
+Phoneme /h/ (128):   10000000 (Actuator 7 = ON)
+
+Both use 80ms patterns - unified speed!
+```
+
+**Benefits:**
+- ✅ No mode switching overhead
+- ✅ Can mix within same message
+- ✅ Clear mode indication (no ambiguity)
+- ✅ Perfect capacity fit (256 patterns)
+
+---
+
 ## Technical Deep Dive
 
 ### System Architecture
@@ -224,32 +345,59 @@ The Teletypathy system consists of three main layers:
 
 #### Design Principles
 
-1. **Frequency Optimization**: Common letters (E, T, A, O, I) use single-actuator, short patterns
-2. **Spatial + Temporal**: Multi-dimensional encoding using actuator location and timing
-3. **Learnability**: Patterns designed for muscle memory development
-4. **Consistency**: Similar patterns for related characters
+1. **8-Bit Encoding**: All patterns use 8-bit values (256 total patterns)
+2. **Mode Indicator**: Actuator 7 indicates encoding type (character vs. phoneme)
+3. **Unified Speed**: Both modes use 80ms patterns for consistency
+4. **Frequency Optimization**: Common patterns use simpler bit patterns
+5. **Seamless Switching**: Can mix character and phoneme patterns in same message
+6. **Learnability**: Patterns designed for muscle memory development
 
 #### Pattern Structure
 
-Each pattern consists of:
-- **Actuator Events**: Which motor activates, when, and for how long
-- **Spatial Encoding**: Actuator ID (0-7) determines location
-- **Temporal Encoding**: Time offsets and durations create rhythm
-- **Intensity**: Optional vibration strength (0-255)
+**8-Bit Pattern Format:**
+- **Actuator 7**: Mode indicator (OFF = character, ON = phoneme)
+- **Actuators 0-6**: Data bits (7 bits = 128 patterns per mode)
+- **Duration**: 80ms (uniform for all patterns)
+- **Activation**: All actuators simultaneous (spatial encoding)
 
-#### Example Patterns
+#### Pattern Space Allocation
 
-- **Letter 'E'** (most common, 12.7% frequency):
-  - Single actuator (0), 150ms pulse
-  - Simplest pattern for fastest recognition
+- **Character Mode** (Patterns 0-127):
+  - Basic characters: ~78 patterns (letters, numbers, punctuation)
+  - Top 150 words: 150 patterns (optional word-level encoding)
+  - Remaining: 28 patterns for expansion
 
-- **Letter 'N'** (medium frequency, 6.7%):
-  - Sequential: Actuator 0 → 1
-  - Two pulses: 100ms each, 50ms gap
+- **Phoneme Mode** (Patterns 128-255):
+  - English phonemes: 40 patterns
+  - Remaining: 88 patterns for expansion (stress markers, other languages)
 
-- **Letter 'Z'** (rare, 0.07% frequency):
-  - Complex: 8 actuators, sequential reverse pattern
-  - Longer pattern acceptable for rare character
+#### Encoding Modes
+
+**Character Encoding:**
+- Direct ASCII-to-pattern mapping
+- Preserves exact spelling
+- Best for: Technical text, proper nouns, URLs, code
+
+**Phoneme Encoding:**
+- Text → phonemes → patterns (G2P conversion)
+- Fewer patterns (6.7-10.6% compression)
+- **8.9% faster** than character encoding
+- Best for: General text, narrative content, natural speech
+
+**Hybrid Mode:**
+- Automatic selection: phonemes for common words, characters for proper nouns
+- Seamless mode switching per pattern
+- Best for: Mixed content
+
+#### Performance Comparison
+
+**For 7,014-character article:**
+- Single-byte character: 9.35 minutes (12.5 cps)
+- **8-bit phoneme: 8.36 minutes (14.0 cps)** ⭐ Fastest
+- Character + Top 150 words: 8.86 minutes (13.2 cps)
+- Hybrid: 9.04 minutes (12.9 cps)
+
+**Key Insight**: Phoneme encoding provides **8.9% average speed improvement** by reducing pattern count while maintaining full legibility.
 
 ### Communication Protocol
 
@@ -428,8 +576,10 @@ flowchart TD
 - **ESP32 Platform**: Best cost/performance ratio, native BLE support
 - **LRA Motors**: Fast response time (10-20ms) supports low-latency goal
 - **DRV2605 Drivers**: Automatic resonance tracking essential for reliable patterns
-- **Direct Character Mapping**: Simple, learnable, low-latency (lookup table)
-- **Spatial + Temporal Encoding**: Multi-dimensional patterns for information density
+- **8-Bit Encoding with Mode Indicator**: Enables mixed character/phoneme encoding
+- **Mode Indicator (Actuator 7)**: Simple, unambiguous mode switching
+- **Unified 80ms Patterns**: Consistent speed across both encoding modes
+- **Phoneme Encoding**: 8.9% faster than character encoding (fewer patterns)
 - **BLE Protocol**: Low power, adequate latency with optimization
 
 See [docs/decisions.md](docs/decisions.md) for detailed decision records.
@@ -442,6 +592,8 @@ Comprehensive documentation is available in the `docs/` directory:
 
 - **[System Overview](docs/architecture/system_overview.md)**: High-level architecture
 - **[Encoding System](docs/design/encoding_system.md)**: Pattern encoding design
+- **[Encoding Mode Comparison](docs/design/encoding_mode_comparison.md)**: Character vs. Phoneme encoding
+- **[8-Bit Phoneme Analysis](comprehensive_8bit_phoneme_analysis.md)**: Mixed encoding approach
 - **[Protocol Specification](docs/design/protocol_spec.md)**: Communication protocol
 - **[Hardware Specifications](docs/hardware/specs.md)**: Hardware details
 - **[API Reference](docs/api/encoding.md)**: API documentation
